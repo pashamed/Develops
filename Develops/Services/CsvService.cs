@@ -74,7 +74,14 @@ namespace Develops.Services
 
                     trip.PickupDateTime = TimeZoneInfo.ConvertTimeToUtc(trip.PickupDateTime, estTimeZone);
                     trip.DropoffDateTime = TimeZoneInfo.ConvertTimeToUtc(trip.DropoffDateTime, estTimeZone);
-                    records.Add(trip);
+                    if (trip.IsValid(out string validationError))
+                    {
+                        records.Add(trip);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error processing line {lineNumber}: {validationError}");
+                    }
                 }
                 catch (IndexOutOfRangeException)
                 {
